@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso VUE3</title>
+    <!--VUE CDN-->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!--STYLE-->
+    <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+    <div id="app">
+        <div lass="product-display">
+          <div class="product-container">
+            <div class="product-image">
+              <!--IMAGEM DO PRODUTO-->
+              <img :src="image" alt=”img-product”>
+            </div>
+            <div class="product-info">
+              <!--INFO DO PRODUTO-->
+              <h1>T-Shirt</h1>
+              <p>In Stock</p>
+            </div>
+          </div>
+        </div>  
+    </div>
+
+    <script>
+
+      const { createApp, ref } = Vue
+    
+      createApp({
+        setup() {
+          const message = ref('Hello vue!')
+          return {
+            message,
+            image: ref ("assets/image/t-shirt-blue.png")
+          }
+        }
+      }).mount('#app')
+
+    </script>
+
+</body>
+</html>
+
