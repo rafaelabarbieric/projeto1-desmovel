@@ -1,48 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso VUE3</title>
-    <!--VUE CDN-->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <!--STYLE-->
-    <link rel="stylesheet" href="assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curso VUE3</title>
+  <!--VUE CDN-->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <!--STYLE-->
+  <link rel="stylesheet" href="assets/style.css">
 </head>
+
 <body>
 
-    <div id="app">
-        <div lass="product-display">
-          <div class="product-container">
-            <div class="product-image">
-              <!--IMAGEM DO PRODUTO-->
-              <img :src="image" alt=”img-product”>
-            </div>
-            <div class="product-info">
-              <!--INFO DO PRODUTO-->
-              <h1>T-Shirt</h1>
-              <p>In Stock</p>
-            </div>
+  <div id="app">
+    <div class="cart">Cart: {{cart}}</div>
+    <div lass="product-display">
+      <div class="product-container">
+        <div class="product-image">
+          <!--IMAGEM DO PRODUTO-->
+          <img :src="image" alt=”img-product”>
+        </div>
+        <div class="product-info">
+          <!--INFO DO PRODUTO-->
+          <h1>{{ product_title }}</h1>
+          <p v-if="inStock >= 10">In Stock</p>
+          <p v-else-if="inStock < 10 && inStock > 1">Almost of out</p>
+          <p v-else>Out of stock</p>
+          <ul>
+            <li v-for="detail in details">
+              {{ detail }}
+            </li>
+          </ul>
+          <div v-for="variant in variants" :key="variant.id" @mouseover="changeImage(variant.image)"
+            class="color-circle" :style="{backgroundColor: variant.color}">
           </div>
-        </div>  
+          <button class="button" :class="{disabledButton: inStock < 1}" v-on:click="addToCart"
+            :disabled="inStock < 1">Add to cart</button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <script>
+  <script>
 
-      const { createApp, ref } = Vue
-    
-      createApp({
-        setup() {
-          const message = ref('Hello vue!')
-          return {
-            message,
-            image: ref ("assets/image/t-shirt-blue.png")
-          }
+    const { createApp, ref } = Vue
+
+    createApp({
+      setup() {
+
+        const cart = ref(0);
+        const addToCart = () => {
+          cart.value += 1
         }
-      }).mount('#app')
 
-    </script>
+        const image = ref("./assets/image/t-shirt-blue.png")
+        const changeImage = (variantImage) => {
+
+          image.value = variantImage
+        }
+
+        return {
+          product_title: ref('T-Shirt'),
+          image,
+          inStock: ref(0),
+          details: ['50% Cotton', '30% Polyester', '20% Woll'],
+          variants:
+            [{ id: 1, color: 'blue', image: "./assets/image/t-shirt-blue.png" },
+            { id: 2, color: 'green', image: "./assets/image/t-shirt-green.png" }],
+          cart,
+          addToCart,
+          changeImage
+        }
+      }
+    }).mount('#app')
+
+  </script>
 
 </body>
-</html>
 
+</html>
